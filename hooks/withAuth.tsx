@@ -13,6 +13,7 @@ import { useAuthMutation } from "@/store/services/features/TodoApi";
 import { DEBUG } from "@/constants/global";
 import { selectTokens, setTokens, setUser } from "@/store/LocalStore";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 // Higher Order Component for Authentication
 export const withAuth = (Component: FC) => {
@@ -64,6 +65,7 @@ export const withAuth = (Component: FC) => {
           onPress={goTodo}
         >
           <Text style={styles.buttonText}>GO TODO</Text>
+          <MaterialIcons name="navigate-next" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
     );
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.purple,
     backgroundColor: COLORS.purple,
+    flexDirection: "row",
   },
   buttonText: {
     fontSize: 14,
