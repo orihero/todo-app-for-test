@@ -5,7 +5,12 @@ import axios, {
   AxiosError,
 } from "axios";
 import { DEBUG } from "@/constants/global";
-import { selectTokens, selectUser, setTokens } from "../LocalStore";
+import {
+  clearLocalStore,
+  selectTokens,
+  selectUser,
+  setTokens,
+} from "../LocalStore";
 import store from "../store";
 
 // Extend the InternalAxiosRequestConfig interface
@@ -77,7 +82,10 @@ ApiClient.interceptors.response.use(
 
           return ApiClient(originalRequest);
         }
-      } catch (err) {
+      } catch (err: any) {
+        if (err.response?.status === 403) {
+          store.dispatch(clearLocalStore());
+        }
         if (DEBUG) console.error("[Refresh Token Error]:", err);
       }
     }
