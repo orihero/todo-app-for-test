@@ -1,37 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Stack } from "expo-router";
+import "react-native-reanimated";
+import { LogBox } from "react-native";
+import {
+  useFonts,
+  LexendDeca_100Thin,
+  LexendDeca_200ExtraLight,
+  LexendDeca_300Light,
+  LexendDeca_400Regular,
+  LexendDeca_500Medium,
+  LexendDeca_600SemiBold,
+  LexendDeca_700Bold,
+  LexendDeca_800ExtraBold,
+  LexendDeca_900Black,
+} from "@expo-google-fonts/lexend-deca";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "@/store/store";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+LogBox.ignoreLogs([
+  "Require cycle: store/store.ts -> store/services/features/TodoApi.ts -> store/services/ApiBaseQuery.ts -> store/services/ApiClient.ts -> store/store.ts",
+]);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  useFonts({
+    LexendDeca_100Thin,
+    LexendDeca_200ExtraLight,
+    LexendDeca_300Light,
+    LexendDeca_400Regular,
+    LexendDeca_500Medium,
+    LexendDeca_600SemiBold,
+    LexendDeca_700Bold,
+    LexendDeca_800ExtraBold,
+    LexendDeca_900Black,
   });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerTitle: "My To-Do" }} />
+        </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
